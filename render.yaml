@@ -1,0 +1,20 @@
+databases:
+  - name: livraria
+    databaseName: livraria
+    user: livraria
+
+services:
+  - type: web
+    name: livraria
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn livraria.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: livraria
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
